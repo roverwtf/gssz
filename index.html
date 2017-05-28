@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>國城食職 字母抽選工具 Powered by Rover Wong</title>
+	<meta name="viewport" content="device-width" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+	<style text="text/css">
+	body{margin:0;padding:0;font-family: 'Roboto Slab', serif, 'Microsoft JhengHei';}
+	#main-body{margin:20px auto 0;width:480px;}
+	#result{font-size:200px;text-align:center;}
+	#result.confirmed{color:red;}
+	</style>
+	<script>
+	var count = 0;
+	var lock = false;
+	
+	$(function(){
+		$("#btn").click(function(){
+			if(!lock){
+				count = 0;
+				lock = true;
+				$("#result").removeClass("confirmed");
+				randomise($("#alphabet").val());
+			}
+		});
+	});
+	
+	function randomise(alphabet){
+		var letters = [];
+	
+		if(alphabet=="jp"){
+			letters = ['b','p','m','f','d','t','n','l','g/gw','k/kw','h','z','c','s','j','w','ng/ø'];
+		} else if(alphabet=="py") {
+			letters = ['b','p','m','f','d','t','n','l','g','k','h','j','q','x','zh','ch','sh','r','z','c','s','y','w','ø'];
+		} else if(alphabet=="qx") {
+			letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','r','s','t','u','v','w','y','z'];
+		} else {
+			letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+		}
+		
+		var tmp = Math.floor(Math.random()*letters.length);
+		$("#result").text(letters[tmp]);
+		
+		if(count>=50){
+			$("#result").addClass("confirmed");
+			lock = false;
+		} else {
+			count++;
+			setTimeout(function(){
+				randomise(alphabet);
+			},10);
+		}
+	
+	}
+	</script>
+</head>
+<body>
+	<div id="main-body">
+		<div class="form-group col-xs-8">
+			<select id="alphabet" class="form-control">
+				<option value="en">英文</option>
+				<option value="qx">英文(q,x除外)</option>
+				<option value="jp">粵拼</option>
+				<option value="py">漢語拼音</option>
+			</select>
+		</div>
+		<button id="btn" class="btn btn-primary col-xs-4">畀個字母嚟！</button>
+		<div class="clearfix"></div>
+		<div id="result"></div>
+	</div>
+</body>
